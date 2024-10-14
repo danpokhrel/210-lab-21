@@ -51,8 +51,8 @@ private:
         Goat data;
         Node* prev;
         Node* next;
-        Node(Goat val, Node* p = nullptr, Node* n = nullptr) {
-            data = val; 
+        Node(Goat *val, Node* p = nullptr, Node* n = nullptr) {
+            data = *val; // copies the actual data, not the pointer
             prev = p;
             next = n;
         }
@@ -65,7 +65,7 @@ public:
     // constructor
     DoublyLinkedList() { head = nullptr; tail = nullptr; }
 
-    void push_back(Goat value) {
+    void push_back(Goat *value) {
         Node* newNode = new Node(value);
         if (!tail)  // if there's no tail, the list is empty
             head = tail = newNode;
@@ -76,7 +76,7 @@ public:
         }
     }
 
-    void push_front(Goat value) {
+    void push_front(Goat *value) {
         Node* newNode = new Node(value);
         if (!head)  // if there's no head, the list is empty
             head = tail = newNode;
@@ -87,7 +87,7 @@ public:
         }
     }
 
-    void insert_after(Goat value, int position) {
+    void insert_after(Goat *value, int position) {
         if (position < 0) {
             cout << "Position must be >= 0." << endl;
             return;
@@ -118,11 +118,11 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(Goat value) {
+    void delete_node(Goat *value) {
         if (!head) return; // Empty list
 
         Node* temp = head;
-        while (temp && temp->data.getName() != value.getName())
+        while (temp && temp->data.getName() != value->getName())
             temp = temp->next;
 
         if (!temp) return; // Value not found
@@ -144,9 +144,12 @@ public:
 
     void print() {
         Node* current = head;
-        if (!current) return;
+        if (!current){
+            cout << "List Empty";
+            return;
+        }
         while (current) {
-            cout << current->data.getStr();
+            cout << "    " << current->data.getStr() << endl;
             current = current->next;
         }
         cout << endl;
@@ -154,9 +157,12 @@ public:
 
     void print_reverse() {
         Node* current = tail;
-        if (!current) return;
+        if (!current){
+            cout << "List Empty";
+            return;
+        }
         while (current) {
-            cout << current->data.getStr();
+            cout << "    " << current->data.getStr() << endl;
             current = current->prev;
         }
         cout << endl;
@@ -178,17 +184,20 @@ int main() {
     DoublyLinkedList list;
     int size = rand() % (MAX_LS-MIN_LS+1) + MIN_LS;
 
-    for (int i = 0; i < size; ++i)
-        list.push_back(rand() % (MAX_NR-MIN_NR+1) + MIN_NR);
-    cout << "List forward: ";
+    for (int i = 0; i < size; ++i){ // populate list
+        Goat *goat = new Goat();
+        list.push_back(goat);
+    }
+
+    cout << "List forward:\n";
     list.print();
 
-    cout << "List backward: ";
+    cout << "List backward:\n";
     list.print_reverse();
 
     cout << "Deleting list, then trying to print.\n";
     list.~DoublyLinkedList();
-    cout << "List forward: ";
+    cout << "List forward:\n";
     list.print();
 
     return 0;
