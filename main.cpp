@@ -30,15 +30,28 @@ public:
         color = colors[rand() % ARR_COUNT]; // choose a color at index 0-14
     }
     Goat(int a, string n, string c) {age = a; name = n; color = c;}
+
+    // Setters
+    void setAge(int a) {age = a;}
+    void setName(string n) {name = n;}
+    void setColor(string c) {color = c;}
+    // Getters
+    int getAge() const {return age;}
+    string getName() const {return name;}
+    string getColor() const {return color;}
+
+    string getStr() { // Returns data as formatted string
+        return name + " (" + color + ", " + to_string(age) + ")";
+    }
 };
 
 class DoublyLinkedList {
 private:
     struct Node {
-        int data;
+        Goat data;
         Node* prev;
         Node* next;
-        Node(int val, Node* p = nullptr, Node* n = nullptr) {
+        Node(Goat val, Node* p = nullptr, Node* n = nullptr) {
             data = val; 
             prev = p;
             next = n;
@@ -52,7 +65,7 @@ public:
     // constructor
     DoublyLinkedList() { head = nullptr; tail = nullptr; }
 
-    void push_back(int value) {
+    void push_back(Goat value) {
         Node* newNode = new Node(value);
         if (!tail)  // if there's no tail, the list is empty
             head = tail = newNode;
@@ -63,7 +76,7 @@ public:
         }
     }
 
-    void push_front(int value) {
+    void push_front(Goat value) {
         Node* newNode = new Node(value);
         if (!head)  // if there's no head, the list is empty
             head = tail = newNode;
@@ -74,7 +87,7 @@ public:
         }
     }
 
-    void insert_after(int value, int position) {
+    void insert_after(Goat value, int position) {
         if (position < 0) {
             cout << "Position must be >= 0." << endl;
             return;
@@ -105,11 +118,11 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(int value) {
+    void delete_node(Goat value) {
         if (!head) return; // Empty list
 
         Node* temp = head;
-        while (temp && temp->data != value)
+        while (temp && temp->data.getName() != value.getName())
             temp = temp->next;
 
         if (!temp) return; // Value not found
@@ -133,7 +146,7 @@ public:
         Node* current = head;
         if (!current) return;
         while (current) {
-            cout << current->data << " ";
+            cout << current->data.getStr();
             current = current->next;
         }
         cout << endl;
@@ -143,7 +156,7 @@ public:
         Node* current = tail;
         if (!current) return;
         while (current) {
-            cout << current->data << " ";
+            cout << current->data.getStr();
             current = current->prev;
         }
         cout << endl;
@@ -160,8 +173,8 @@ public:
 
 // Driver program
 int main() {
-    strand(time(0));
-    
+    srand(time(0));
+
     DoublyLinkedList list;
     int size = rand() % (MAX_LS-MIN_LS+1) + MIN_LS;
 
