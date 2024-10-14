@@ -1,8 +1,36 @@
 // COMSC-210 | Lab 21 | Dan Pokhrel
 #include <iostream>
+#include <string>
 using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
+const int MAX_AGE = 20, ARR_COUNT = 15;
+
+class Goat{
+private:
+    int age;
+    string name;
+    string color;
+    string names[ARR_COUNT] = {
+        "Bella", "Luna", "Daisy", "Milo", "Chloe",
+        "Thor", "Willow", "Oliver", "Hazel", "Archie",
+        "Clover", "Finn", "Penny", "Ruby", "Leo"
+    };
+    string colors[ARR_COUNT] = {
+        "Red", "Blue", "Green", "Yellow", "Orange",
+        "Purple", "Pink", "Brown", "Black", "White",
+        "Gray", "Cyan", "Magenta", "Lime", "Indigo"
+    };
+
+public:
+    // constructors
+    Goat(){
+        age = rand() % MAX_AGE + 1; // 1-20
+        name = names[rand() % ARR_COUNT]; // choose a name at index 0-14
+        color = colors[rand() % ARR_COUNT]; // choose a color at index 0-14
+    }
+    Goat(int a, string n, string c) {age = a; name = n; color = c;}
+};
 
 class DoublyLinkedList {
 private:
@@ -132,6 +160,8 @@ public:
 
 // Driver program
 int main() {
+    strand(time(0));
+    
     DoublyLinkedList list;
     int size = rand() % (MAX_LS-MIN_LS+1) + MIN_LS;
 
